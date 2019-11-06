@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Lambda function that pulls images from alertwildfires.org
+
+Resources:
+  WildFireFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello-world/
+      Handler: app.lambdaHandler
+      Runtime: nodejs10.x
+      Timeout: 15
+      MemorySize: 1024
+      Events:
+        RunOnSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 minute)
