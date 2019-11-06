@@ -1,40 +1,21 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: 'sam-app
-
-  Sample SAM Template for sam-app
+Description: 'Lambda function that pulls images from alertwildfires.org
 
   '
-Globals:
-  Function:
-    Timeout: 3
 Resources:
-  HelloWorldFunction:
+  WildFireFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://fdingler-sam-artifacts/ee27ba4a1d9108d03d6a93ad566c0572
+      CodeUri: s3://fdingler-sam-artifacts/7d9f1ff21797345f1712adc8b32aa0be
       Handler: app.lambdaHandler
       Runtime: nodejs10.x
+      Timeout: 15
+      MemorySize: 1024
+      Policies:
+      - AmazonS3FullAccess
       Events:
-        HelloWorld:
-          Type: Api
+        RunOnSchedule:
+          Type: Schedule
           Properties:
-            Path: /hello
-            Method: get
-Outputs:
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
-    Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
-  HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
-    Value:
-      Fn::GetAtt:
-      - HelloWorldFunction
-      - Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
-    Value:
-      Fn::GetAtt:
-      - HelloWorldFunctionRole
-      - Arn
+            Schedule: rate(1 minute)

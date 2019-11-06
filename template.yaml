@@ -12,6 +12,8 @@ Resources:
       Runtime: nodejs10.x
       Timeout: 15
       MemorySize: 1024
+      Policies:
+        - AmazonS3FullAccess
       Events:
         RunOnSchedule:
           Type: Schedule
